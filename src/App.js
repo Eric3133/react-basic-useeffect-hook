@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+
+import { useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
 
+const url = 'http://geek.itheima.net/v1_0/channels'
 function App() {
+
+  const [list, setList] = useState([])
+
+  useEffect(() => {
+    async function getList() {
+      // const list = await fetch(url).json()
+      const res = await fetch(url)
+      const jsonRes = await res.json()
+      console.log(jsonRes)
+      setList(jsonRes.data.channels)
+    }
+    getList()
+  }, [])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>React App</h1>
+      <ul>
+        {list.map(item => <li key={item.id}>{item.name}</li>)}
+      </ul>
     </div>
   );
 }
